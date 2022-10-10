@@ -1,0 +1,4 @@
+﻿  4_20211063_오창엽.c
+C:\Users\channi\Desktop\SOGANG\2022-2학기\자료구조\DataStructureWork\4_20211063_오창엽\4_20211063_오창엽\4_20211063_오창엽.c(19,2): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\channi\Desktop\SOGANG\2022-2학기\자료구조\DataStructureWork\4_20211063_오창엽\4_20211063_오창엽\4_20211063_오창엽.c(20,2): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  4_20211063_오창엽.vcxproj -> C:\Users\channi\Desktop\SOGANG\2022-2학기\자료구조\DataStructureWork\4_20211063_오창엽\Debug\4_20211063_오창엽.exe
