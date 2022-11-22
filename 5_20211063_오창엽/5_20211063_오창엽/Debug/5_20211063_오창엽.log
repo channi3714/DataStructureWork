@@ -1,0 +1,5 @@
+﻿  5_20211063_오창엽.c
+C:\Users\channi\Desktop\SOGANG\2022-2학기\자료구조\DataStructureWork\5_20211063_오창엽\5_20211063_오창엽\5_20211063_오창엽.c(23,7): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\channi\Desktop\SOGANG\2022-2학기\자료구조\DataStructureWork\5_20211063_오창엽\5_20211063_오창엽\5_20211063_오창엽.c(29,2): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\channi\Desktop\SOGANG\2022-2학기\자료구조\DataStructureWork\5_20211063_오창엽\5_20211063_오창엽\5_20211063_오창엽.c(31,16): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  5_20211063_오창엽.vcxproj -> C:\Users\channi\Desktop\SOGANG\2022-2학기\자료구조\DataStructureWork\5_20211063_오창엽\Debug\5_20211063_오창엽.exe
