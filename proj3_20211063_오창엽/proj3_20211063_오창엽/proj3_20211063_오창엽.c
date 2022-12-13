@@ -7,8 +7,14 @@ typedef struct node {
 	int vertex;
 	node_pointer link;
 }node;
+typedef struct stackNode* stackNodePointer;
+typedef struct stackNode {
+	int src;
+	int dst;
+	stackNodePointer link;
+}stackNode;
 typedef struct {
-	node_pointer top;
+	stackNodePointer top;
 }Stack;
 
 node_pointer graph[MAX_VERTICES];
@@ -18,11 +24,11 @@ void vis(int visited[], int n);
 
 void init(Stack* s);
 int is_empty(Stack* s);
-void push(Stack* s, int item);
-int pop(Stack* s);
+void push(Stack* s, int item1, int item2);
+stackNode pop(Stack* s);
 
 void makeGraph(int src, int dst, int visited[]);
-void DFS(node_pointer graph[], int s, int visited[]);
+void dfs(node_pointer graph[], int s, int visited[]);
 
 int main(void) {
 	FILE* fp = NULL;
@@ -40,7 +46,7 @@ int main(void) {
 		exit(0);
 	}
 	fscanf(fp, "%d", &n);
-	printf("%d\n", n);
+	//printf("%d\n", n);
 	int* visited = (int*)malloc(sizeof(int) * n);
 	vis(visited, n);
 	while (EOF != fscanf(fp, "%d %d %c", &src, &dst, &dir)) {
@@ -54,39 +60,35 @@ int main(void) {
 			makeGraph(src, dst, visited);
 			visited[src] = 1;
 		}
-		printf("%d %d %c\n", src, dst, dir);
+		//printf("%d %d %c\n", src, dst, dir);
 	}
 	vis(visited, n);
-	printf("\n");
-	for (int i = 1; i <= n; i++) {
+	//printf("\n");
+	/*for (int i = 1; i <= n; i++) {
 		node_pointer p = graph[i];
-		printf("%d : ", i);
+		printf("%d ", i);
 		while (p) {
-			printf("%d ", p->vertex);
+			printf("-> %d ", p->vertex);
 			p = p->link;
 		}
 		printf("\n");
 	}
+	printf("\n");*/
 
-	//printf("%d %d", graph[1]->vertex, graph[1]->link->vertex);
+	int input;
+
+	while (1) {
+		scanf("%d", &input);
+		if (input == -1) {
+			break;
+		}
+		vis(visited, n);
+		dfs(graph, input, visited);
+		printf("\n");
+	}
 	
-	vis(visited, n);
-	printf("\n");
-	DFS(graph, 1, visited);
-	vis(visited, n);
-	printf("\n");
-	DFS(graph, 2, visited);
-	vis(visited, n);
-	printf("\n");
-	DFS(graph, 3, visited);
-	vis(visited, n);
-	printf("\n");
-	DFS(graph, 4, visited);
-	vis(visited, n);
-	printf("\n");
-	DFS(graph, 5, visited);
-	printf("\n");
 
+	
 	fclose(fp);
 
 
@@ -107,20 +109,23 @@ int is_empty(Stack* s) {
 	return (s->top == NULL);
 }
 
-void push(Stack* s, int item) {
-	node_pointer temp = (node_pointer)malloc(sizeof(node));
-	temp->vertex = item;
+void push(Stack* s, int item1, int item2) {
+	stackNodePointer temp = (stackNodePointer)malloc(sizeof(stackNode));
+	temp->src = item1;
+	temp->dst = item2;
 	temp->link = s->top;
 	s->top = temp;
 }
 
-int pop(Stack* s) {
+stackNode pop(Stack* s) {
 	if (is_empty(s)) {
 		printf("stack empty\n");
 	}
 	else {
-		node_pointer temp = s->top;
-		int data = temp->vertex;
+		stackNodePointer temp = s->top;
+		stackNode data;
+		data.src = temp->src;
+		data.dst = temp->dst;
 		s->top = s->top->link;
 		free(temp);
 		return data;
@@ -131,7 +136,7 @@ void makeGraph(int src, int dst, int visited[]) {
 	node_pointer cur = graph[src];
 	node_pointer ptr = (node_pointer)malloc(sizeof(node));
 	if (visited[src] == 0) {
-		printf("src %d NULL\n", src);
+		//printf("src %d NULL\n", src);
 		ptr->vertex = dst;
 		ptr->link = graph[src];
 		graph[src] = ptr;
@@ -165,36 +170,59 @@ void makeGraph(int src, int dst, int visited[]) {
 	return;
 }
 
-//void makeGraph(int src, int dst) {
-//	node_pointer ptr = (node_pointer)malloc(sizeof(node));
-//
-//	ptr->vertex = dst;
-//	ptr->link = graph[src];
-//	graph[src] = ptr;
-//}
-
-void DFS(node_pointer graph[], int s, int visited[]) {
+void dfs(node_pointer graph[], int s, int visited[]) {
+	if (graph[s] == NULL) {
+		printf("%d", s);
+		return;
+	}
 	node_pointer temp = NULL;
-	int v;
+	stackNode data;
 	Stack S;
+	int item1, item2, cnt = 1;
 	init(&S);
-	// 시작 정점을 스택에 push 합니다.
-	push(&S, s);
-
-	while (!is_empty(&S)) {
-		// 스택에 있는 정점을 pop하고 방문 표시를 합니다.
-		s = pop(&S);
-		if (visited[s - 1] == 0) {
-			visited[s - 1] = 1;
-			printf("%d ", s);
-		}
-
-		// 방문하지 않은 인접 정점을 스택에 push합니다.
-		for (temp = graph[s]; temp != NULL; temp = temp->link) {
-			v = temp->vertex;
-			if (visited[v - 1] == 0) {
-				push(&S, v);
+	temp = graph[s];
+	item1 = s;
+	item2 = temp->vertex;
+	printf("%d ", item1);
+	printf("%d ", item2);
+	push(&S, item1, item2);
+	//printf("--------------push %d %d\n", item1, item2);
+	visited[s - 1] = 1;
+	
+	
+	while (1) {
+		//printf("%d ", temp->vertex);
+		//printf("cnt%d\n", cnt);
+		if (cnt >= 4) return;
+		if (visited[temp->vertex - 1] == 1) {
+			if (temp->link == NULL) {
+				data = pop(&S);
+				temp = graph[data.src];
+				//printf("\n---------------pop %d %d\n", data.src, data.dst);
 			}
+			else {
+				temp = temp->link;
+				item2 = temp->vertex;
+				if (visited[temp->vertex - 1] == 0) {
+					printf("%d ", item2);
+					push(&S, item1, item2);
+					//printf("\n--------------push %d %d\n", item1, item2);
+					cnt++;
+				}
+			}
+		}
+		else {
+			item1 = temp->vertex;
+			temp = graph[temp->vertex];
+			item2 = temp->vertex;
+			if (visited[item2 - 1] == 0) {
+				printf("%d ", item2);
+				push(&S, item1, item2);
+				//printf("\n--------------push %d %d\n", item1, item2);
+				cnt++;
+			}
+			visited[item1 - 1] = 1;
+			
 		}
 	}
 }
